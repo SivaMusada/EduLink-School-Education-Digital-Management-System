@@ -29,7 +29,9 @@ public class SecurityConfig {
                         "/api/tracking/**",
                         "/api/reports/**",
                         "/api/academics/**",
-                        "/api/compliance/**"
+                        "/api/compliance/**",
+                        "/api/students/**"
+
                 );
     }
 
