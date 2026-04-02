@@ -30,7 +30,9 @@ public class SecurityConfig {
                         "/api/reports/**",
                         "/api/academics/**",
                         "/api/compliance/**",
-                        "/api/students/**"
+                        "/api/students/**",
+                        "/api/exams/**",
+                        "/api/grades/**"
 
                 );
     }
@@ -41,7 +43,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/api/comm/**", "/api/tracking/**", "/api/reports/**").permitAll()
+                        .requestMatchers("/api/auth/**", "/api/comm/**", "/api/tracking/**", "/api/reports/**","/api/exams/**",
+                                "/api/grades/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults());
