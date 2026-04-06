@@ -2,10 +2,10 @@ package com.cts.edulink.student_service.controller;
 
 import com.cts.edulink.student_service.entity.Student;
 import com.cts.edulink.student_service.service.StudentService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -16,7 +16,7 @@ public class StudentController {
     private StudentService studentService;
 
     @PostMapping("/register")
-    public ResponseEntity<Student> register(@RequestBody Student student) {
+    public ResponseEntity<Student> register(@Valid @RequestBody Student student) {
         return ResponseEntity.status(201).body(studentService.registerStudent(student));
     }
 
@@ -27,18 +27,12 @@ public class StudentController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Student> getById(@PathVariable Long id) {
-        return studentService.getStudentById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(studentService.getStudentById(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Student> update(@PathVariable Long id, @RequestBody Student student) {
-        try {
-            return ResponseEntity.ok(studentService.updateStudent(id, student));
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<Student> update(@PathVariable Long id, @Valid @RequestBody Student student) {
+        return ResponseEntity.ok(studentService.updateStudent(id, student));
     }
 
     @DeleteMapping("/{id}")
