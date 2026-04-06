@@ -2,10 +2,10 @@ package com.cts.edulink.student_service.controller;
 
 import com.cts.edulink.student_service.entity.StudentDocument;
 import com.cts.edulink.student_service.service.StudentDocumentService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -16,7 +16,7 @@ public class StudentDocumentController {
     private StudentDocumentService documentService;
 
     @PostMapping
-    public ResponseEntity<StudentDocument> upload(@RequestBody StudentDocument doc) {
+    public ResponseEntity<StudentDocument> upload(@Valid @RequestBody StudentDocument doc) {
         return ResponseEntity.status(201).body(documentService.uploadDocument(doc));
     }
 
@@ -27,18 +27,12 @@ public class StudentDocumentController {
 
     @GetMapping("/{id}")
     public ResponseEntity<StudentDocument> getById(@PathVariable Long id) {
-        return documentService.getDocumentById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(documentService.getDocumentById(id));
     }
 
     @PutMapping("/{id}/verify")
     public ResponseEntity<StudentDocument> verify(@PathVariable Long id, @RequestParam String status) {
-        try {
-            return ResponseEntity.ok(documentService.updateDocumentStatus(id, status));
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(documentService.updateDocumentStatus(id, status));
     }
 
     @DeleteMapping("/{id}")
