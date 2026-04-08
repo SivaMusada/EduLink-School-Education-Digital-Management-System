@@ -3,7 +3,7 @@ package com.cts.edulink.reporting_service.service;
 
 import com.cts.edulink.reporting_service.entity.Report;
 import com.cts.edulink.reporting_service.repository.ReportRepository;
-import com.cts.edulink.reporting_service.repository.PerformanceReportRepository;
+import com.cts.edulink.tracking_service.repository.PerformanceMetricRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -16,8 +16,8 @@ public class AnalyticsServiceImpl implements IAnalyticsService {
     private ReportRepository reportRepository;
 
     @Autowired
-    @Qualifier("reportingPerformanceRepository")
-    private PerformanceReportRepository metricRepository;
+    @Qualifier("trackingPerformanceRepository")
+    private PerformanceMetricRepository metricRepository;
 
     @Override
     public Report generatePerformanceReport(String scope, Long targetId) {
