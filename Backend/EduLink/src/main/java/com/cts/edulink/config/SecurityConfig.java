@@ -12,7 +12,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,6 +35,7 @@ public class SecurityConfig {
                         // Allow anyone to access Login and Register
                         .requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
                         // Require a valid token for EVERYTHING else
+
                         .anyRequest().authenticated()
                 );
 
@@ -41,6 +43,10 @@ public class SecurityConfig {
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Bean

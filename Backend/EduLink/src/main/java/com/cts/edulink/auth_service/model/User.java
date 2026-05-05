@@ -14,17 +14,23 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userID;
 
+    @Column(unique = true, nullable = false)
     @NotBlank(message = "Name is required")
     private String name;
+
+    @Column(unique = true, nullable = false)
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format")
     private String email;
 
+    @Column(unique = true, nullable = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // This hides it from the output
     private String password;
 
     @NotBlank(message = "Role is required")
     private String role;
+
+    @Column(unique = true, nullable = false)
     @Pattern(regexp="^[6-9]\\d{9}$",message = "Phone must be 10 digits")
     private String phone;
 

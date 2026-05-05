@@ -5,6 +5,7 @@ import com.cts.edulink.auth_service.model.LoginRequest;
 import com.cts.edulink.auth_service.model.LoginResponse;
 import com.cts.edulink.auth_service.model.User;
 import com.cts.edulink.auth_service.service.AuthService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ public class AuthController {
     // --- POST METHODS ---
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody User user) {
+    public ResponseEntity<User> register(@Valid @RequestBody User user) {
         return new ResponseEntity<>(authService.registerUser(user), HttpStatus.CREATED);
     }
 
@@ -59,6 +60,23 @@ public class AuthController {
         return authService.getUserById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+    @GetMapping("/users/role/{role}")
+    public ResponseEntity<List<User>> getUsersByRole(@PathVariable String role) {
+        List<User> users= authService.getUsersByRole(role);
+        if (users.isEmpty()) {
+            return ResponseEntity.noContent().build(); // Returns 204 if no users found
+        }
+        return ResponseEntity.ok(users);
+    }
+    @PutMapping("/users/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @Valid @RequestBody User userDetails) {
+        try {
+            User updatedUser = authService.updateUser(id, userDetails);
+            return ResponseEntity.ok(updatedUser);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     // --- AUDIT GET METHODS ---
