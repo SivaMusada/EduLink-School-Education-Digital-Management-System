@@ -1,6 +1,7 @@
 package com.cts.edulink.exam_service.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 import java.time.LocalDate;
 
@@ -11,8 +12,15 @@ public class Exam {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long examID;
 
-    private Long courseID; // Links to Academic Course
-    private String type;   // Midterm, Final, Quiz
+    @NotNull(message = "Course ID is required")
+    private Long courseID;
+
+    @NotBlank(message = "Exam type is required (Midterm, Final, etc.)")
+    private String type;
+
+    @FutureOrPresent(message = "Exam date cannot be in the past")
     private LocalDate date;
-    private String status; // Scheduled, Completed, Cancelled
+
+    @Pattern(regexp = "Scheduled|Completed|Cancelled", message = "Status must be Scheduled, Completed, or Cancelled")
+    private String status = "Scheduled";
 }
